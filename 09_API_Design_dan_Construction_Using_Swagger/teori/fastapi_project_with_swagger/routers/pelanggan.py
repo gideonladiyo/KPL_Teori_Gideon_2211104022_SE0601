@@ -2,10 +2,7 @@ from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 from typing import List, Optional
 
-router = APIRouter(
-    prefix="/pelanggan",
-    tags=["Pelanggan"]
-)
+router = APIRouter(prefix="/pelanggan", tags=["Pelanggan"])
 
 class Pelanggan(BaseModel):
     id: int
@@ -18,11 +15,11 @@ class PelangganCreate(BaseModel):
 
 pelanggan_list = [
     {"id": 1, "nama": "Andi", "email": "andi@mail.com"},
-    {"id": 2, "nama": "Siti", "email": "siti@mail.com"}
+    {"id": 2, "nama": "Siti", "email": "siti@mail.com"},
 ]
 
 @router.get(
-    "/", 
+    "/",
     response_model=List[Pelanggan],
     summary="Daftar Semua Pelanggan",
     responses={
@@ -32,12 +29,12 @@ pelanggan_list = [
                 "application/json": {
                     "example": [
                         {"id": 1, "nama": "Andi", "email": "andi@mail.com"},
-                        {"id": 2, "nama": "Siti", "email": "siti@mail.com"}
+                        {"id": 2, "nama": "Siti", "email": "siti@mail.com"},
                     ]
                 }
-            }
+            },
         }
-    }
+    },
 )
 def get_all_pelanggan():
     return pelanggan_list
@@ -53,17 +50,15 @@ def get_all_pelanggan():
                 "application/json": {
                     "example": {"id": 1, "nama": "Andi", "email": "andi@mail.com"}
                 }
-            }
+            },
         },
         404: {
             "description": "Pelanggan tidak ditemukan",
             "content": {
-                "application/json": {
-                    "example": {"detail": "Pelanggan tidak ditemukan"}
-                }
-            }
-        }
-    }
+                "application/json": {"example": {"detail": "Pelanggan tidak ditemukan"}}
+            },
+        },
+    },
 )
 def get_pelanggan(pelanggan_id: int):
     for p in pelanggan_list:
@@ -83,9 +78,9 @@ def get_pelanggan(pelanggan_id: int):
                 "application/json": {
                     "example": {"id": 3, "nama": "Budi", "email": "budi@mail.com"}
                 }
-            }
+            },
         }
-    }
+    },
 )
 def create_pelanggan(pelanggan: PelangganCreate):
     new_id = max([p["id"] for p in pelanggan_list], default=0) + 1
@@ -102,19 +97,21 @@ def create_pelanggan(pelanggan: PelangganCreate):
             "description": "Data pelanggan berhasil diperbarui",
             "content": {
                 "application/json": {
-                    "example": {"id": 1, "nama": "Andi Update", "email": "andi@update.com"}
+                    "example": {
+                        "id": 1,
+                        "nama": "Andi Update",
+                        "email": "andi@update.com",
+                    }
                 }
-            }
+            },
         },
         404: {
             "description": "Pelanggan tidak ditemukan untuk diperbarui",
             "content": {
-                "application/json": {
-                    "example": {"detail": "Pelanggan tidak ditemukan"}
-                }
-            }
-        }
-    }
+                "application/json": {"example": {"detail": "Pelanggan tidak ditemukan"}}
+            },
+        },
+    },
 )
 def update_pelanggan(pelanggan_id: int, pelanggan: PelangganCreate):
     for i, p in enumerate(pelanggan_list):
@@ -134,17 +131,15 @@ def update_pelanggan(pelanggan_id: int, pelanggan: PelangganCreate):
                 "application/json": {
                     "example": {"message": "Pelanggan dengan ID 1 telah dihapus"}
                 }
-            }
+            },
         },
         404: {
             "description": "Pelanggan tidak ditemukan untuk dihapus",
             "content": {
-                "application/json": {
-                    "example": {"detail": "Pelanggan tidak ditemukan"}
-                }
-            }
-        }
-    }
+                "application/json": {"example": {"detail": "Pelanggan tidak ditemukan"}}
+            },
+        },
+    },
 )
 def delete_pelanggan(pelanggan_id: int):
     for i, p in enumerate(pelanggan_list):
